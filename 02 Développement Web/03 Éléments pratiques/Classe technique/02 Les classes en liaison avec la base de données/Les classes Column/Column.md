@@ -1,24 +1,36 @@
-# Présentation
+Voici la version revue et complétée de la documentation. Elle intègre la notion de **nettoyage / assainissement (`sanitize`)**, clarifie le cycle de validation et met à jour les exemples pour refléter la nouvelle architecture.
 
-La classe `Column` est la classe de base utilisée pour représenter une **colonne métier persistée** dans une classe métier.
+# Documentation : La classe `Column`
+
+## Présentation
+
+La classe `Column` est la classe de base utilisée pour représenter une colonne métier persistée dans une classe métier.
 
 Une colonne métier associe :
 
 - une valeur ;
+    
+- **un traitement de nettoyage (assainissement) ;**
+    
 - des règles de validation ;
+    
 - des informations nécessaires aux opérations CRUD.
+    
 
 Elle constitue le lien entre :
 
 - la classe métier représentant une table ;
+    
 - les données manipulées par l'application ;
+    
 - la base de données.
+    
 
 Les classes `Column` sont utilisées dans les classes métier qui héritent généralement de `Table`.
 
-Exemple :
+PHP
 
-```php
+```
 class Categorie extends Table
 {
     protected function defineColumns(): void
@@ -33,74 +45,112 @@ class Categorie extends Table
 }
 ```
 
-Ici, la colonne SQL `nom` est représentée par un objet `ColumnText` qui hérite de `Column`.
+_Ici, la colonne SQL `nom` est représentée par un objet `ColumnText` qui hérite de `Column`._
 
-# Rôle de `Column`
+## Rôle de `Column`
 
-`Column` est une classe abstraite.
-
-Elle ne doit jamais être utilisée directement.
-
-Elle fournit le comportement commun à toutes les colonnes :
+`Column` est une classe **abstraite**. Elle ne doit jamais être instanciée directement. Elle fournit le comportement commun à toutes les colonnes :
 
 - gestion de la valeur ;
+    
+- **nettoyage et assainissement des données entrée (`sanitize`) ;**
+    
 - gestion du caractère obligatoire ;
+    
 - contrôle avant insertion ou modification ;
+    
 - gestion des messages d'erreur.
+    
 
 Les classes spécialisées héritent de `Column` :
+
+Plaintext
 
 ```
 Column
  |
  +-- ColumnText
  |
+ +-- ColumnTextarea
+ |
  +-- ColumnInt
  |
  +-- ColumnDate
  |
- +-- ColumnList
- |
  +-- ...
 ```
 
-Chaque classe fille ajoute ses propres contrôles.
+Chaque classe fille ajoute ses propres traitements et contrôles :
 
-Exemple :
+- `ColumnText` nettoie le texte (titre, casse, espaces, accents) puis valide le format (regex, longueur) ;
+    
+- `ColumnTextarea` filtre ou encode le contenu HTML ;
+    
+- `ColumnInt` contrôle qu'une valeur est un entier.
+    
 
-- `ColumnInt` vérifie qu'une valeur est un entier ;
-- `ColumnText` contrôle une chaîne de caractères ;
-- `ColumnDate` contrôle une date.
+## La propriété `$Value`
 
-# La propriété `Value`
+PHP
 
-```php
+```
 public mixed $Value;
 ```
 
 Cette propriété contient la valeur associée à la colonne.
 
-Exemple :
+PHP
 
-```php
+```
 $age = new ColumnInt();
-
 $age->Value = 25;
 ```
 
-La valeur est ensuite utilisée par les opérations CRUD.
+La valeur est ensuite utilisée par les opérations CRUD. Lors d'une modification :
 
-Lors d'une modification :
+PHP
 
-```php
+```
 $categorie->setValue('ageMin', 10);
 ```
 
 la valeur est stockée dans la colonne correspondante.
 
-# La propriété `Required`
+## La méthode `sanitize()` (Nettoyage de la donnée)
 
-```php
+PHP
+
+```
+public function sanitize(mixed $value): mixed
+```
+
+Cette méthode permet de **nettoyer et normaliser la donnée** avant d'effectuer les contrôles de validité.
+
+Par défaut, dans la classe abstraite `Column`, la méthode retourne la valeur inchangée :
+
+PHP
+
+```
+public function sanitize(mixed $value): mixed
+{
+    return $value;
+}
+```
+
+Les classes filles redéfinissent cette méthode pour appliquer leurs règles d'assainissement spécifiques **avant** validation.
+
+### Exemples de surcharges :
+
+- **`ColumnText`** : applique un nettoyage de type titre (`Std::nettoyerTitre`), transforme la casse (`UPPER`, `Lower`, `First`...), retire les accents ou réduit les espaces multiples selon sa configuration.
+    
+- **`ColumnTextarea`** : nettoie le code HTML (`Std::nettoyerHtml`), supprime les balises interdites ou applique un `htmlspecialchars`.
+    
+
+## La propriété `$Required`
+
+PHP
+
+```
 public readonly bool $Required;
 ```
 
@@ -108,193 +158,193 @@ Indique si la colonne doit obligatoirement contenir une valeur.
 
 Par défaut :
 
-```php
+PHP
+
+```
 new ColumnText();
 ```
 
 équivaut à :
 
-```php
+PHP
+
+```
 new ColumnText(required: true);
 ```
 
-Une colonne obligatoire :
+### Comportement :
 
-```php
-$nom = new ColumnText(required: true);
+- **Une colonne obligatoire** (`required: true`) refusera `null` ou une chaîne ne contenant que des espaces `" "`.
+    
+- **Une colonne facultative** (`required: false`) acceptera une valeur vide ou `null`.
+    
+
+## Les propriétés CRUD
+
+### `Insertable`
+
+PHP
+
 ```
-
-refusera :
-
-```text
-null
-```
-
-ou :
-
-```text
-"    "
-```
-
-Une colonne facultative :
-
-```php
-$commentaire = new ColumnText(required: false);
-```
-
-acceptera une valeur vide.
-
-# Les propriétés CRUD
-
-## `Insertable`
-
-```php
 public readonly bool $Insertable;
 ```
 
-Indique si la colonne peut être utilisée lors d'une insertion.
+Indique si la colonne peut être utilisée lors d'une insertion (`INSERT`).
 
-Exemple : Une clé primaire générée automatiquement :
+_Exemple — Une clé primaire auto-incrémentée :_
 
-```php
+PHP
+
+```
 $id = new ColumnInt(insertable: false);
 ```
 
-La colonne existe dans la table mais ne doit pas apparaître dans une requête `INSERT`.
+La colonne existe dans la table mais ne sera pas transmise dans la requête `INSERT`.
 
-## `Updatable`
+### `Updatable`
 
-```php
+PHP
+
+```
 public readonly bool $Updatable;
 ```
 
-Indique si la colonne peut être modifiée.
+Indique si la colonne peut être modifiée (`UPDATE`).
 
-Exemple : Une date de création :
+_Exemple — Une date de création :_
 
-```php
+PHP
+
+```
 $dateCreation = new ColumnDate(
     insertable: true,
     updatable: false
 );
 ```
 
-La valeur est enregistrée lors de la création mais ne peut plus être changée.
+La valeur est enregistrée à la création mais ne pourra plus être modifiée par la suite.
 
-# La méthode `checkValidity()`
+## La méthode `checkValidity()` et cycle de validation
 
-```php
+PHP
+
+```
 public function checkValidity(): bool
 ```
 
-Cette méthode réalise les contrôles communs à toutes les colonnes.
+Cette méthode réalise les contrôles de la colonne. Son exécution suit un ordre strict :
 
-Elle vérifie principalement :
+1. **Nettoyage automatique (`sanitize`)** : la valeur présente dans `$Value` est immédiatement nettoyée et réaffectée à `$Value`.
+    
+2. **Contrôle d'obligation (`Required`)** : elle vérifie qu'une valeur obligatoire est bien renseignée.
+    
 
-- qu'une valeur obligatoire est présente.
+### Implémentation dans `Column` :
 
-Exemple :
+PHP
 
-```php
-$nom = new ColumnText();
+```
+public function checkValidity(): bool
+{
+    // 1. Assainissement préalable de la donnée
+    if ($this->Value !== null) {
+        $this->Value = $this->sanitize($this->Value);
+    }
 
-$nom->Value = '';
+    // 2. Contrôle du caractère obligatoire
+    if ($this->Required && ($this->Value === null || strlen(trim((string)$this->Value)) === 0)) {
+        $this->validationMessage = "Veuillez renseigner ce champ.";
+        return false;
+    }
 
-if (!$nom->checkValidity()) {
-    echo $nom->getValidationMessage();
+    return true;
 }
 ```
 
-Résultat :
+### Redéfinition dans les classes filles :
 
-```text
-Veuillez renseigner ce champ.
+Les classes filles redéfinissent `checkValidity()` pour exécuter leurs propres règles de validation **sur la valeur nettoyée**. Elles commencent toujours par appeler `parent::checkValidity()`.
+
+PHP
+
 ```
-
-
-Les classes filles redéfinissent cette méthode pour ajouter leurs propres contrôles.
-
-Exemple :
-
-```php
-class ColumnInt extends Column
+class ColumnText extends Column
 {
     public function checkValidity(): bool
     {
+        // Exécute d'abord sanitize() et le contrôle Required
         if (!parent::checkValidity()) {
             return false;
         }
 
-        // contrôle spécifique des entiers
+        // Si le champ facultatif est vide, la validation réussit
+        if ($this->Value === null || $this->Value === '') {
+            return true;
+        }
+
+        // Ici, $this->Value est DEJA nettoyée/assainie
+        // Exécution des règles spécifiques (Pattern, MinLength, MaxLength)
+        if ($this->Pattern !== null && !preg_match($this->Pattern, (string)$this->Value)) {
+            $this->validationMessage = "La valeur transmise n'est pas valide.";
+            return false;
+        }
 
         return true;
     }
 }
 ```
 
-La classe fille commence toujours par appeler :
+> **Important** : Grâce à cet ordre d'exécution, la validation par expression régulière (`Pattern`) ou par longueur (`MinLength`, `MaxLength`) s'applique toujours sur la chaîne **déjà assainie et transformée**.
 
-```php
-parent::checkValidity()
+## Récupérer un message d'erreur
+
+Lorsqu'une validation échoue, le message associé s'obtient avec `getValidationMessage()` :
+
+PHP
+
 ```
-
-afin de conserver les contrôles communs.
-
-# Récupérer un message d'erreur
-
-Lorsqu'une validation échoue, le message associé peut être obtenu avec :
-
-```php
-getValidationMessage()
-```
-
-Exemple :
-
-```php
 if (!$colonne->checkValidity()) {
     echo $colonne->getValidationMessage();
 }
 ```
 
+## Exemple complet dans une classe métier
 
-# Exemple complet dans une classe métier
+PHP
 
-```php
+```
 protected function defineColumns(): void
 {
+    // Champ texte obligatoire, nettoyé (espaces/casse) et limité à 30 caractères
     $colonne = new ColumnText(
         required: true,
-        maxLength: 30
+        maxLength: 30,
+        casse: TextCase::First,
+        supprimerEspaceSuperflu: true
     );
-
     $this->addColumn('nom', $colonne);
 
-
+    // Champ entier obligatoire avec plage de valeurs
     $colonne = new ColumnInt(
         required: true,
         min: 1,
         max: 99
     );
-
     $this->addColumn('age', $colonne);
 }
 ```
 
-La classe métier définit alors :
+## À retenir
 
-- quelles colonnes existent ;
-- leur type ;
-- leurs règles de validation ;
-- leurs règles CRUD.
+`Column` représente une donnée persistée dans l'application. Elle permet de centraliser :
 
-# À retenir
+1. **La structure des données** ;
+    
+2. **Le nettoyage et la normalisation des saisies (`sanitize`)** ;
+    
+3. **Les règles de validation (`checkValidity`)** ;
+    
+4. **Les contraintes CRUD (`Required`, `Insertable`, `Updatable`)**.
+    
 
-`Column` représente une donnée persistée dans l'application.
-
-Elle permet de centraliser :
-
-- la structure des données ;
-- les règles de validation ;
-- les contraintes CRUD.
-
-Les classes métier ne manipulent pas directement les valeurs SQL : elles utilisent des objets `Column` spécialisés.
+Les classes métier et les contrôleurs n'ont plus à nettoyer les données manuellement : le nettoyage et la validation sont totalement délégués aux objets `Column`.

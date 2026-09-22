@@ -1,41 +1,38 @@
 ## Présentation
 
-La classe `ColumnText` représente une **colonne métier contenant une chaîne de caractères**.
+La classe `ColumnText` représente une colonne métier contenant une chaîne de caractères.
 
-Elle hérite de la classe `Column` et ajoute les contrôles spécifiques aux textes :
+Elle hérite de la classe `Column` et associe :
 
-- longueur minimale et maximale ;
-- contrôle par expression régulière ;
-- transformation de la casse ;
-- suppression éventuelle des accents ;
-- suppression des espaces inutiles.
+- **Un nettoyage et assainissement automatique (`sanitize`)** : normalisation métier (titres), suppression d'accents, espaces superflus, transformation de la casse ;
+    
+- **Des règles de validation** : longueur minimale et maximale, contrôle par expression régulière.
+    
 
-Elle est utilisée dans les classes métier pour représenter les colonnes SQL de type texte :
+Elle est utilisée dans les classes métier pour représenter les colonnes SQL de type texte : `VARCHAR`, `CHAR`, `TEXT`.
 
-- `VARCHAR` ;
-- `CHAR` ;
-- `TEXT`.
+PHP
 
-Exemple :
-
-```php
+```
 $nom = new ColumnText(
     required: true,
-    maxLength: 50
+    maxLength: 50,
+    casse: TextCase::Word,
+    supprimerEspaceSuperflu: true
 );
 
 $this->addColumn('nom', $nom);
 ```
 
-La colonne `nom` devra obligatoirement contenir une chaîne de caractères d'au maximum 50 caractères.
+_Ici, la colonne `nom` sera nettoyée, remise en forme (première lettre de chaque mot en majuscule, espaces nettoyés) et devra comporter au maximum 50 caractères._
 
-# Héritage
+## Héritage
 
-`ColumnText` hérite de `Column`.
+`ColumnText` hérite de `Column`. Elle possède donc les propriétés et méthodes communes :
 
-Elle possède donc les propriétés communes :
+Plaintext
 
-```text
+```
 Column
  |
  +-- Value
@@ -44,17 +41,30 @@ Column
  +-- Updatable
  |
  +-- ColumnText
+      +-- Pattern
+      +-- MinLength
+      +-- MaxLength
+      +-- Casse
+      +-- SupprimerAccent
+      +-- SupprimerEspaceSuperflu
 ```
 
 Elle bénéficie notamment :
 
 - de la gestion de la valeur ;
-- du contrôle des champs obligatoires ;
+    
+- du déclenchement automatique du nettoyage via `sanitize()` ;
+    
+- du contrôle des champs obligatoires (`Required`) ;
+    
 - de la gestion des messages d'erreur.
+    
 
-# Le constructeur
+## Le constructeur
 
-```php
+PHP
+
+```
 public function __construct(
     bool $required = true,
     bool $insertable = true,
@@ -68,117 +78,93 @@ public function __construct(
 )
 ```
 
-Le constructeur permet de définir toutes les règles associées à la colonne texte.
+## Nettoyage et assainissement : La méthode `sanitize()`
 
-# Paramètre `required`
+PHP
 
-Détermine si la valeur est obligatoire.
-
-Exemple :
-
-```php
-$nom = new ColumnText(
-    required: true
-);
+```
+public function sanitize(mixed $value): mixed
 ```
 
-Valeurs refusées :
+Cette méthode est appelée automatiquement avant les contrôles de validation. Elle réalise les transformations dans l'ordre suivant :
 
-```text
-null
-""
-"     "
+1. **Nettoyage métier de base** : suppression des espaces invisibles/parasites (via `Std::nettoyerTitre()`) ;
+    
+2. **Suppression des accents** (si `supprimerAccent: true`) ;
+    
+3. **Suppression des espaces superflus** (si `supprimerEspaceSuperflu: true`) ;
+    
+4. **Transformation de la casse** (selon la propriété `Casse`).
+    
+
+### 1. Suppression des accents
+
+- **Paramètre** : `supprimerAccent: true`
+    
+- **Exemple** : `"Élodie"` ➔ `"Elodie"`
+    
+- **Usages** : noms de fichiers, identifiants techniques, slugs.
+    
+
+### 2. Suppression des espaces superflus
+
+- **Paramètre** : `supprimerEspaceSuperflu: true`
+    
+- **Exemple** : `"Jean Dupont "` ➔ `"Jean Dupont"`
+    
+
+### 3. Gestion de la casse (`TextCase`)
+
+L'énumération `TextCase` définit les règles de transformation de la casse :
+
+PHP
+
+```
+enum TextCase
+{
+    case None;   // Aucun changement ("Jean DUPONT" -> "Jean DUPONT")
+    case Upper;  // Tout en majuscules ("jean dupont" -> "JEAN DUPONT")
+    case Lower;  // Tout en minuscules ("Jean DUPONT" -> "jean dupont")
+    case Word;   // Majuscule à chaque mot ("JEAN DUPONT" -> "Jean Dupont")
+    case First;  // Majuscule sur la 1re lettre uniquement ("jEAN" -> "Jean")
+}
 ```
 
-Exemple d'un champ facultatif :
+## Règles de validation (exécutées sur la valeur nettoyée)
 
-```php
-$commentaire = new ColumnText(
-    required: false
-);
+### 1. Contrôle du caractère obligatoire (`Required`)
+
+Rejette `null` ou une chaîne vide.
+
+PHP
+
+```
+$nom = new ColumnText(required: true);
 ```
 
-# Contrôle de longueur
+- **Valeurs refusées** : `null`, `""`, `" "`.
+    
 
-## Longueur minimale
+### 2. Longueur minimale (`minLength`) et maximale (`maxLength`)
 
-Paramètre :
+- **`minLength`** : rejet si le texte comporte moins de $N$ caractères.
+    
+- **`maxLength`** : rejet si le texte dépasse $N$ caractères.
+    
 
-```php
-minLength
+PHP
+
+```
+$nom = new ColumnText(minLength: 3, maxLength: 30);
 ```
 
-Exemple :
+### 3. Expression régulière (`pattern`)
 
-```php
-$nom = new ColumnText(
-    minLength: 3
-);
+Contrôle que le texte respecte un format précis (regex).
+
+PHP
+
 ```
-
-Les valeurs suivantes seront refusées :
-
-```text
-"A"
-"AB"
-```
-
-## Longueur maximale
-
-Paramètre :
-
-```php
-maxLength
-```
-
-Exemple :
-
-```php
-$nom = new ColumnText(
-    maxLength: 30
-);
-```
-
-Une valeur dépassant 30 caractères sera refusée.
-
-# Contrôle par expression régulière
-
-Paramètre :
-
-```php
-pattern
-```
-
-Permet d'imposer un format précis.
-
-Exemple :
-
-```php
-$id = new ColumnText(
-    pattern: '^[A-Z]{2}[0-9]{3}$'
-);
-```
-
-Valeurs acceptées :
-
-```text
-AB123
-XY456
-```
-
-Valeurs refusées :
-
-```text
-abc
-A1234
-12AB
-```
-
-## Exemple métier
-
-Dans une catégorie de coureurs :
-
-```php
 $id = new ColumnText(
     required: true,
     pattern: '^(M(10|[0-9])|[A-Z]{2})$',
@@ -187,201 +173,53 @@ $id = new ColumnText(
 );
 ```
 
-Cette règle autorise par exemple :
+- **Valeurs acceptées** : `"EA"`, `"M0"`, `"M10"`.
+    
+- **Valeurs refusées** : `"abc"`, `"A1234"`, `"12AB"`.
+    
 
-```text
-EA
-M0
-M10
+> **Note importante** : L'expression régulière est contrôlée **après** l'exécution de `sanitize()`. Si vous avez activé `casse: TextCase::Upper`, votre motif regex peut utiliser directement des majuscules (`^[A-Z]+$`), car la valeur aura déjà été passée en majuscules.
+
+## La méthode `checkValidity()`
+
+PHP
+
 ```
-
-# Gestion de la casse
-
-La classe utilise l'énumération :
-
-```php
-enum TextCase
-{
-    case None;
-    case Upper;
-    case Lower;
-    case Word;
-    case First;
-}
-```
-
-Elle permet de transformer automatiquement le texte avant son enregistrement.
-
-## Aucun changement
-
-```php
-casse: TextCase::None
-```
-
-La valeur est conservée.
-
-Exemple :
-
-```text
-Jean DUPONT
-```
-
-reste :
-
-```text
-Jean DUPONT
-```
-
-## Tout en majuscules
-
-```php
-casse: TextCase::Upper
-```
-
-Exemple :
-
-```text
-jean dupont
-```
-
-devient :
-
-```text
-JEAN DUPONT
-```
-
-## Tout en minuscules
-
-```php
-casse: TextCase::Lower
-```
-
-Exemple :
-
-```text
-Jean DUPONT
-```
-
-devient :
-
-```text
-jean dupont
-```
-
-
-## Première lettre de chaque mot en majuscule
-
-```php
-casse: TextCase::Word
-```
-
-Exemple :
-
-```text
-JEAN DUPONT
-```
-
-devient :
-
-```text
-Jean Dupont
-```
-
-## Première lettre du texte en majuscule
-
-```php
-casse: TextCase::First
-```
-
-Exemple :
-
-```text
-jEAN
-```
-
-devient :
-
-```text
-Jean
-```
-
-# Suppression des accents
-
-Paramètre :
-
-```php
-supprimerAccent
-```
-
-Exemple :
-
-```php
-$nomFichier = new ColumnText(
-    supprimerAccent: true
-);
-```
-
-Transformation :
-
-```text
-Élodie
-```
-
-devient :
-
-```text
-Elodie
-```
-
-Cette option est utile notamment pour :
-
-- les noms de fichiers ;
-- les identifiants techniques ;
-- les recherches sans accent.
-
-# Suppression des espaces superflus
-
-Paramètre :
-
-```php
-supprimerEspaceSuperflu
-```
-
-Cette option remplace plusieurs espaces consécutifs par un seul.
-
-Exemple :
-
-Avant :
-
-```text
-Jean     Dupont
-```
-
-Après validation :
-
-```text
-Jean Dupont
-```
-
-# La méthode `checkValidity()`
-
-```php
 public function checkValidity(): bool
 ```
 
-Cette méthode réalise les contrôles dans l'ordre suivant :
+Cette méthode orchestre la validation complète :
 
-1. vérification des règles communes de `Column` ;
-2. suppression des espaces inutiles ;
-3. suppression éventuelle des accents ;
-4. transformation de la casse ;
-5. contrôle du format avec l'expression régulière ;
-6. contrôle de la longueur ;
-7. enregistrement de la valeur transformée.
+Plaintext
 
-# Exemple complet
+```
+[Appel de checkValidity()]
+         │
+         ▼
+ 1. Appel de parent::checkValidity()
+         │
+         ├───▶ Exécute $this->Value = $this->sanitize($this->Value)
+         │
+         └───▶ Vérifie la règle Required
+         │
+         ▼
+ 2. Si la valeur nettoyée est vide et optionnelle ➔ Retourne true
+         │
+         ▼
+ 3. Contrôle du Pattern (regex) sur la valeur nettoyée
+         │
+         ▼
+ 4. Contrôle de MinLength et MaxLength sur la valeur nettoyée
+         │
+         ▼
+ 5. Validation réussie (la valeur nettoyée est conservée dans $this->Value)
+```
 
-```php
+### Exemple d'exécution complet
+
+PHP
+
+```
 $nom = new ColumnText(
     required: true,
     maxLength: 50,
@@ -392,80 +230,52 @@ $nom = new ColumnText(
 $nom->Value = "  JEAN     DUPONT ";
 
 if ($nom->checkValidity()) {
-
-    echo $nom->Value;
-
+    echo $nom->Value; // Affiche : "Jean Dupont"
 }
 ```
 
-Résultat :
+## Gestion des erreurs
 
-```text
-Jean Dupont
+En cas d'échec de la validation, le message est accessible via `getValidationMessage()` :
+
+PHP
+
 ```
-
-# Gestion des erreurs
-
-Si une validation échoue :
-
-```php
 if (!$nom->checkValidity()) {
-
     echo $nom->getValidationMessage();
-
 }
 ```
 
-Exemples de messages :
+**Exemples de messages générés :**
 
-```text
-Veuillez renseigner ce champ.
+- `"Veuillez renseigner ce champ."`
+    
+- `"La valeur transmise n'est pas valide."`
+    
+- `"Veuillez réduire ce texte afin de ne pas dépasser 50 caractères."`
+    
+- `"Veuillez allonger ce texte pour qu'il comporte au moins 3 caractères. Il en compte actuellement 1."`
+    
+
+## Bonnes pratiques
+
+Déclarez toujours les règles de vos colonnes dans la méthode `defineColumns()` de vos classes métier (`Table`) :
+
+PHP
+
 ```
-
-ou :
-
-```text
-Veuillez réduire ce texte afin de ne pas dépasser 50 caractères.
-```
-
-# Bonnes pratiques
-
-## Définir les règles dans la classe métier
-
-Les règles doivent être déclarées dans la classe représentant la table.
-
-Exemple :
-
-```php
 protected function defineColumns(): void
 {
     $nom = new ColumnText(
         required: true,
-        minLength: 3,
+        minLength: 2,
         maxLength: 50,
-        casse: TextCase::Word
+        casse: TextCase::Word,
+        supprimerEspaceSuperflu: true
     );
 
     $this->addColumn('nom', $nom);
 }
 ```
 
-La validation est alors centralisée et utilisée par toutes les opérations :
-
-- ajout ;
-- modification ;
-- import ;
-- API.
-
-# À retenir
-
-`ColumnText` permet de déclarer une colonne texte avec ses règles métier.
-
-Elle évite de disperser les contrôles dans l'application.
-
-Une seule définition permet de garantir que la donnée respecte toujours :
-
-- son format ;
-- sa longueur ;
-- sa présentation ;
-- ses contraintes métier.
+Grâce à cette déclaration centralisée, toutes les entrées utilisateur (formulaires, requêtes HTTP, API, imports) seront automatiquement **assainies, transformées et validées** de manière uniforme avant d'être enregistrées en base de données.

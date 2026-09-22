@@ -5,7 +5,7 @@ unmerged files because of an error.
 
 detected dubious ownership in repository at '//STR-ELEVES/mboularbi$/Documents/F1-New'
 
-'//STR-ELEVES/mboularbi$/Documents/F1-New' is owned by: 'S-1-5-21-1202660629-651377827-682003330-43862'
+"//STR-ELEVES/mboularbi$/Documents/F1-New' is owned by: 'S-1-5-21-1202660629-651377827-682003330-43862"
 
 but the current user is: 'S-1-5-21-1202660629-651377827-682003330-48575'
 
