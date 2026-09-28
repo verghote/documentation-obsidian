@@ -21,8 +21,6 @@ Une fois la validation réussie, le nom du fichier est normalisé et disponible 
 > `InputFile` ne déplace pas le fichier et ne réalise aucun stockage.  
 > Son rôle est uniquement de vérifier et préparer le fichier avant son utilisation.
 
----
-
 # Création d'un objet
 
 L'objet est construit à partir d'un élément du tableau `$_FILES`.
@@ -40,8 +38,6 @@ Le tableau transmis doit contenir les clés suivantes :
 
 Dans le cas contraire, une exception est levée.
 
----
-
 # Configuration
 
 Avant de lancer la validation, il est possible de définir les règles applicables au fichier.
@@ -57,8 +53,6 @@ $inputFile->setLesExtensions([
 
 Les extensions sont automatiquement converties en minuscules.
 
----
-
 ## Types MIME autorisés
 
 ```php
@@ -70,8 +64,6 @@ $inputFile->setLesTypes([
 
 Le type MIME est déterminé à partir du contenu réel du fichier (`finfo`) et non de la valeur envoyée par le navigateur.
 
----
-
 ## Taille maximale
 
 ```php
@@ -81,8 +73,6 @@ $inputFile->setMaxSize(5_000_000);
 La taille est exprimée en octets.
 
 Une valeur de `0` désactive ce contrôle.
-
----
 
 ## Suppression des accents
 
@@ -97,8 +87,6 @@ Pour conserver les caractères accentués :
 ```php
 $inputFile->setSansAccent(false);
 ```
-
----
 
 ## Transformation de la casse
 
@@ -126,8 +114,6 @@ Les seules valeurs autorisées sont :
 
 Une valeur incorrecte provoque une exception.
 
----
-
 # Validation
 
 La validation est déclenchée par :
@@ -149,8 +135,6 @@ Le résultat de la validation est également disponible via :
 ```php
 $inputFile->isValide();
 ```
-
----
 
 # Cycle de validation
 
@@ -176,8 +160,6 @@ Validation réussie
 
 Le traitement s'arrête dès qu'un contrôle échoue.
 
----
-
 # Contrôle du téléversement
 
 La classe vérifie :
@@ -196,8 +178,6 @@ Exemples :
 - erreur d'écriture sur le disque ;
 - interruption par une extension PHP.
 
----
-
 # Contrôle de la taille
 
 Si une taille maximale est définie, le fichier est refusé lorsqu'elle est dépassée.
@@ -214,8 +194,6 @@ Message obtenu :
 La taille du fichier (2458000 octets) dépasse la taille autorisée (2000000 octets).
 ```
 
----
-
 # Contrôle de l'extension
 
 L'extension est extraite du nom du fichier puis comparée à la liste des extensions autorisées.
@@ -228,8 +206,6 @@ $inputFile->setLesExtensions(['jpg', 'png']);
 
 Un fichier `photo.gif` sera refusé.
 
----
-
 # Contrôle du type MIME
 
 Le type MIME est obtenu à partir du contenu réel du fichier grâce à l'extension `fileinfo`.
@@ -241,8 +217,6 @@ $inputFile->setLesTypes(['image/jpeg', 'image/png']);
 ```
 
 Cette vérification évite de se fier uniquement à l'extension du fichier.
-
----
 
 # Préparation du nom du fichier
 
@@ -305,12 +279,6 @@ Exemples :
 
 - dimensions d'une image ;
 - résolution ;
-- nombre de pages d'un PDF ;
-- contenu d'un document ;
-- durée d'une vidéo ;
-- règles métier particulières.
-
----
 
 # Méthodes d'accès
 
@@ -322,7 +290,6 @@ $inputFile->getFile();
 
 Retourne le tableau complet du fichier.
 
----
 
 ```php
 $inputFile->getName();
@@ -330,7 +297,6 @@ $inputFile->getName();
 
 Retourne le nom d'origine.
 
----
 
 ```php
 $inputFile->getTmpName();
@@ -338,7 +304,6 @@ $inputFile->getTmpName();
 
 Retourne le chemin du fichier temporaire.
 
----
 
 ```php
 $inputFile->getSize();
@@ -346,7 +311,6 @@ $inputFile->getSize();
 
 Retourne la taille en octets.
 
----
 
 ```php
 $inputFile->getError();
@@ -354,7 +318,6 @@ $inputFile->getError();
 
 Retourne le code d'erreur PHP.
 
----
 
 ```php
 $inputFile->getExtension();
@@ -362,7 +325,6 @@ $inputFile->getExtension();
 
 Retourne l'extension en minuscules.
 
----
 
 ```php
 $inputFile->getMimeType();
@@ -370,7 +332,6 @@ $inputFile->getMimeType();
 
 Retourne le type MIME détecté.
 
----
 
 # Messages de validation
 
@@ -419,7 +380,6 @@ $tmp = $inputFile->getTmpName();
 // Le fichier est prêt à être transmis à une classe de stockage.
 ```
 
----
 
 # Extension de la classe
 
@@ -442,8 +402,6 @@ class InputImage extends InputFile
 ```
 
 Cette approche permet de mutualiser toute la logique de validation des fichiers tout en adaptant les contrôles aux différents types de contenus.
-
----
 
 # Résumé
 

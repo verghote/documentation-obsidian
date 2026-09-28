@@ -37,7 +37,7 @@ Chaque type de fichier possède son propre gestionnaire.
 
 Exemple :
 
-```
+```php
 $pdfManager = FileManagerFactory::document();
 ```
 
@@ -49,8 +49,6 @@ Le constructeur vérifie automatiquement :
 
 Une mauvaise configuration provoque immédiatement une exception.
 
----
-
 # Ajouter un fichier
 
 L'ajout consiste à :
@@ -59,7 +57,7 @@ L'ajout consiste à :
 2. vérifier le fichier ;
 3. copier le fichier dans le répertoire de stockage.
 
-```
+```php
 $file = new InputFile($_FILES['fichier']);
 
 if (!$pdfManager->ajouter($file)) {
@@ -69,7 +67,6 @@ if (!$pdfManager->ajouter($file)) {
 
 En cas de succès, le fichier est présent dans le répertoire de stockage.
 
----
 
 # Remplacer un fichier
 
@@ -79,7 +76,7 @@ Seul son contenu est remplacé.
 
 Le nouveau fichier est validé avant toute copie.
 
-```
+```php
 $file = new InputFile($_FILES['fichier']);
 
 $pdfManager->remplacer('contrat.pdf', $file);
@@ -88,8 +85,6 @@ $pdfManager->remplacer('contrat.pdf', $file);
 Cette opération ne modifie jamais le nom du fichier.
 
 Elle est généralement utilisée par un service métier qui connaît le fichier à remplacer.
-
----
 
 # Supprimer un fichier
 
@@ -101,8 +96,6 @@ $pdfManager->supprimer('contrat.pdf');
 
 Le nom fourni doit être un simple nom de fichier appartenant au répertoire géré.
 
----
-
 # Consulter les fichiers
 
 Le gestionnaire peut retourner la liste des fichiers présents.
@@ -112,8 +105,6 @@ $liste = $pdfManager->getLesFichiers();
 ```
 
 Seuls les fichiers possédant une extension autorisée sont retournés.
-
----
 
 # Personnalisation
 

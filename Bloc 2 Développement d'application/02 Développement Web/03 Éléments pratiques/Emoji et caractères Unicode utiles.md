@@ -8,22 +8,22 @@ _Exemple :_ `↓` = `U+2193`
 
 Symboles utilisés pour la création, la lecture, la modification, la suppression et la gestion d'enregistrements.
 
-|**Symbole**|**Nom**|**Code Unicode**|**Opération**|**Usage**|
-|---|---|---|---|---|
-|➕|Ajout|U+2795|Create|Ajouter un nouvel enregistrement|
-|＋|Plus pleine largeur|U+FF0B|Create|Ajouter un élément|
-|✚|Croix plus|U+271A|Create|Ajouter ou créer|
-|📝|Note|U+1F4DD|Create / Update|Créer ou saisir des données|
-|✏️|Crayon|U+270F|Update|Modifier un enregistrement|
-|🖊️|Stylo|U+1F58A|Update|Modifier ou éditer|
-|🛠️|Outils|U+1F6E0|Update|Modifier ou administrer|
-|👁️|Œil|U+1F441|Read|Consulter ou visualiser|
-|📖|Livre ouvert|U+1F4D6|Read|Consulter des informations|
-|📄|Document|U+1F4C4|Read|Consulter un enregistrement|
-|🗑️|Corbeille|U+1F5D1|Delete|Supprimer un enregistrement|
-|❌|Croix rouge|U+274C|Delete / Cancel|Supprimer, annuler ou signaler une erreur|
-|✖️|Croix|U+2716|Delete|Supprimer ou retirer|
-|➖|Moins|U+2796|Delete|Retirer un élément|
+| **Symbole** | **Nom**             | **Code Unicode** | **Opération**   | **Usage**                                 |
+| ----------- | ------------------- | ---------------- | --------------- | ----------------------------------------- |
+| ➕           | Ajout               | U+2795           | Create          | Ajouter un nouvel enregistrement          |
+| ＋           | Plus pleine largeur | U+FF0B           | Create          | Ajouter un élément                        |
+| ✚           | Croix plus          | U+271A           | Create          | Ajouter ou créer                          |
+| 📝          | Note                | U+1F4DD          | Create / Update | Créer ou saisir des données               |
+| ✏️          | Crayon              | U+270F           | Update          | Modifier un enregistrement                |
+| 🖊️         | Stylo               | U+1F58A          | Update          | Modifier ou éditer                        |
+| 🛠️         | Outils              | U+1F6E0          | Update          | Modifier ou administrer                   |
+| 👁️         | Œil                 | U+1F441          | Read            | Consulter ou visualiser                   |
+| 📖          | Livre ouvert        | U+1F4D6          | Read            | Consulter des informations                |
+| 📄          | Document            | U+1F4C4          | Read            | Consulter un enregistrement               |
+| 🗑️         | Corbeille           | U+1F5D1          | Delete          | Supprimer un enregistrement               |
+| ❌           | Croix rouge         | U+274C           | Delete / Cancel | Supprimer, annuler ou signaler une erreur |
+| ✖️          | Croix               | U+2716           | Delete          | Supprimer ou retirer                      |
+| ➖           | Moins               | U+2796           | Delete          | Retirer un élément                        |
 
 ## 2. Recherche, Filtrage & Options
 

@@ -1,6 +1,21 @@
-Cette erreur survient généralement sous Windows lorsque le dossier se trouve sur une clé USB, un disque externe ou une partition (comme du FAT32/exFAT) qui ne gère pas les permissions d'utilisateurs Windows, ce qui pousse Git à bloquer l'accès par sécurité.
+<?php
 
-Pour débloquer la situation, il suffit d'exécuter la commande préconisée par Git dans votre terminal :
+declare(strict_types=1);
 
-Plus radicalement en mode administrateur
-git config --system --add safe.directory "*"
+namespace ClasseTechnique;
+
+/**
+ * Construction des éléments HTML d'une page.
+ *
+ * Cette classe applique les conventions du framework.
+ *
+ * Elle recherche automatiquement :
+ *
+ *  Le header global ;
+ *  le footer global ;
+ *  le menu vertical ;
+ *  le menu horizontal du module ;
+ *  le template HTML de la page ;
+ *  le CSS associé à la page ;
+ *  le JavaScript associé à la page ;
+ *  les ressourc
