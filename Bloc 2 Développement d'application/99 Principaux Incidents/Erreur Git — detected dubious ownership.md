@@ -42,7 +42,7 @@ git pull
 Git fournit directement la commande permettant d'ajouter ce dépôt aux répertoires considérés comme sûrs :
 
 ```bash
-git config --global --add safe.directory '//STR-ELEVES/mboularbi$/Documents/F1-New'
+git config --global --add safe.directory "//STR-ELEVES/mboularbi$/Documents/F1-New"
 ```
 ### Variante exacte affichée par Git
 
@@ -55,7 +55,7 @@ git config --global --add safe.directory '%(prefix)///STR-ELEVES/mboularbi$/Docu
 La version avec le chemin UNC explicite est généralement plus lisible :
 
 ```bash
-git config --global --add safe.directory '//STR-ELEVES/mboularbi$/Documents/F1-New'
+git config --global --add safe.directory "//STR-ELEVES/mboularbi$/Documents/F1-New"
 ```
 
 ## Vérifier la configuration

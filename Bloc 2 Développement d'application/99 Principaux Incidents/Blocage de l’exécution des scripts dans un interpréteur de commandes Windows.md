@@ -22,7 +22,7 @@ Le problème empêchait notamment :
 - l'utilisation de certaines fonctionnalités de Cmder reposant sur l'interpréteur de commandes Windows.
 ## 3. Analyse
 
-En questionnant l'IA la raison est expliqué et une solution est proposé :
+En questionnant l'IA la raison est expliquée et une solution est proposée :
 
 Ce message indique que l'invite de commandes (cmd.exe) a été bloquée dans le Registre Windows. Comme **Cmder** s'appuie sur `cmd.exe` par défaut pour démarrer, il se retrouve bloqué lui aussi.
 
