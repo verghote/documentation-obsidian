@@ -1,0 +1,291 @@
+{
+  "main": {
+    "id": "b6e96373d0f52666",
+    "type": "split",
+    "children": [
+      {
+        "id": "c080fbae996fb8e2",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "1245a79661090fce",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Bloc 3 Cybersécurité/01 Présentation du Bloc 3 (Cybersécurité des services informatiques).md",
+                "mode": "source",
+                "source": false,
+                "backlinks": true,
+                "backlinkOpts": {
+                  "collapseAll": false,
+                  "extraContext": false,
+                  "sortOrder": "alphabetical",
+                  "showSearch": false,
+                  "searchQuery": "",
+                  "backlinkCollapsed": false,
+                  "unlinkedCollapsed": true
+                }
+              },
+              "icon": "lucide-file",
+              "title": "01 Présentation du Bloc 3 (Cybersécurité des services informatiques)"
+            }
+          },
+          {
+            "id": "a5c71c76b79a9fe2",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Bloc 2 Développement d'application/06 Langages informatique/C sharp/06 Gestion de la Configuration d'une Application .NET avec le fichier appsettings.json.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": true,
+                "backlinkOpts": {
+                  "collapseAll": false,
+                  "extraContext": false,
+                  "sortOrder": "alphabetical",
+                  "showSearch": false,
+                  "searchQuery": "",
+                  "backlinkCollapsed": false,
+                  "unlinkedCollapsed": true
+                }
+              },
+              "icon": "lucide-file",
+              "title": "06 Gestion de la Configuration d'une Application .NET avec le fichier appsettings.json"
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "05f4cf43502c91d9",
+    "type": "split",
+    "children": [
+      {
+        "id": "2b199f21b5bfe97b",
+        "type": "tabs",
+        "dimension": 80.01592356687898,
+        "children": [
+          {
+            "id": "5cd4169565582649",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Explorateur de fichiers"
+            }
+          }
+        ]
+      },
+      {
+        "id": "6b39dbc0b8753b4e",
+        "type": "tabs",
+        "dimension": 19.98407643312102,
+        "children": [
+          {
+            "id": "56ba3f3e1ce5a672",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "tag:#nullable",
+                "matchingCase": true,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Rechercher"
+            }
+          },
+          {
+            "id": "af3fba33e408cb90",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-bookmark",
+              "title": "Signets"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 558.4115753173828
+  },
+  "right": {
+    "id": "88d2f6c61ec76de2",
+    "type": "split",
+    "children": [
+      {
+        "id": "d0d1dba927b49dcf",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "80c6c2b3688f4e67",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Bloc 2 Développement d'application/06 Langages informatique/C sharp/06 Gestion de la Configuration d'une Application .NET avec le fichier appsettings.json.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Rétroliens"
+            }
+          },
+          {
+            "id": "9a848f6da5f4ba80",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "2026-06-01.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Liens sortants de 2026-06-01"
+            }
+          },
+          {
+            "id": "95eb78be8fbc5dbc",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Mots-clés"
+            }
+          },
+          {
+            "id": "8603d76f8a852579",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Toutes les propriétés"
+            }
+          },
+          {
+            "id": "cfd4f291c07f3199",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "2026-06-01.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Plan de 2026-06-01"
+            }
+          },
+          {
+            "id": "485f1c827d00fbf1",
+            "type": "leaf",
+            "state": {
+              "type": "footnotes",
+              "state": {
+                "file": "Évolution de l'IA.md"
+              },
+              "icon": "lucide-file-signature",
+              "title": "Notes de bas de page"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "graph:Ouvrir la vue graphique": false,
+      "switcher:Ouvrir le sélecteur rapide": false,
+      "daily-notes:Ouvrir la note quotidienne": false,
+      "templates:Insérer le modèle": false,
+      "command-palette:Ouvrir la palette de commandes": false,
+      "bases:Créer une nouvelle base": false
+    }
+  },
+  "active": "a5c71c76b79a9fe2",
+  "lastOpenFiles": [
+    "Bloc 2 Développement d'application/06 Langages informatique/C sharp/08 Utilisation d'une base de données MySQL.md",
+    "Bloc 2 Développement d'application/06 Langages informatique/C sharp/08 La classe Passerelle.md",
+    "Bloc 2 Développement d'application/02 Développement Web/02 Éléments théoriques/L'approche pragmatique Classe Métier Données en PHP.md",
+    "Bloc 2 Développement d'application/02 Développement Web/02 Éléments théoriques/Architecture en couches de l'application.md",
+    "Bloc 2 Développement d'application/06 Langages informatique/C sharp/07 Gestion des Packages NuGet et des Références de Projet.md",
+    "Bloc 2 Développement d'application/06 Langages informatique/C sharp/06 Gestion de la Configuration d'une Application .NET avec le fichier appsettings.json.md",
+    "Bloc 2 Développement d'application/06 Langages informatique/C sharp/05 La classe List.md",
+    "Bloc 3 Cybersécurité/Les attaques/Les attaques sur la chaîne d'approvisionnement logicielle (software supply chain attacks).md",
+    "Bloc 3 Cybersécurité/Comprendre les menaces et adopter les bonnes pratiques.md",
+    "Bloc 3 Cybersécurité/Les attaques",
+    "Bloc 2 Développement d'application/99 Principaux Incidents/2026-10-21 Faille de sécurité PHP.md",
+    "Bloc 2 Développement d'application/02 Développement Web/Principales vulnérabilités Web.md",
+    "Bloc 2 Développement d'application/06 Langages informatique/C sharp/02 Classes et objets.md",
+    "Bloc 2 Développement d'application/04 Programmation Objet/01 Présentation/Introduction à la Programmation Orientée Objet (POO).md",
+    "Bloc 2 Développement d'application/06 Langages informatique/C sharp/04 Les tests unitaires avec MSTest.md",
+    "Bloc 2 Développement d'application/06 Langages informatique/C sharp/03 Les Types de référence nullable (Nullable Reference Types).md",
+    "Bloc 2 Développement d'application/06 Langages informatique/C sharp/01 Les deux grands écosystèmes de développement en C sharp.md",
+    "01 Informations générales/Un développeur sera t'il encore capable d'écrire du code, j'en doute !.md",
+    "01 Informations générales/Les effets négatifs de l'IA chez les développeurs.md",
+    "Bloc 2 Développement d'application/01 Généralités/Les types de tests logiciels.md",
+    "Bloc 2 Développement d'application/02 Développement Web/01 Présentation/02 Récupération et gestion des projets avec Git et GitHub.md",
+    "Bloc 2 Développement d'application/01 Généralités/Les tests.md",
+    "Bloc 2 Développement d'application/01 Généralités/documentation_technique_types_de_tests_logiciels.md",
+    "Bloc 2 Développement d'application/01 Généralités/Mémento du futur développeur.md",
+    "Bloc 2 Développement d'application/01 Généralités/Quelques conseils.md",
+    "01 Informations générales/Évolution de l'IA.md",
+    "PPE Support de l'épreuve E6/01 Présentation des PPE (Projet Personnel Encadré).md",
+    "PPE Support de l'épreuve E6",
+    "01 Informations générales",
+    "Bloc 2 Développement d'application/06 Langages informatique/C sharp",
+    "Bloc 2 Développement d'application/04 Programmation Objet/01 Présentation/Pasted image 20261028102707.png",
+    "Bloc 2 Développement d'application/04 Programmation Objet/01 Présentation/Pasted image 20261028102154.png",
+    "Bloc 2 Développement d'application/04 Programmation Objet/01 Présentation",
+    "Bloc 2 Développement d'application/02 Développement Web/06 Les API",
+    "Bloc 2 Développement d'application/02 Développement Web/03 Éléments pratiques/Composant serveur",
+    "Bloc 2 Développement d'application/02 Développement Web/03 Éléments pratiques/Composant Serveur",
+    "Veille/Fuite de données",
+    "Bloc 3 Cybersécurité/Guardia-CS-guide-metiers.pdf",
+    "Outils/Github/connexion_gh.png",
+    "connexion_gh.png",
+    "Outils/GitHub/connexion_gh.png",
+    "Outils/Github/Pièces jointes/connexion_gh.png",
+    "Pasted image 20260622091110.png",
+    "Sans titre.canvas"
+  ]
+}

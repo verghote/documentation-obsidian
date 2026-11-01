@@ -1,0 +1,6 @@
+| **Classe**         | **Rôle / Responsabilité**                                                                                                        | **Ne fait PAS**                                                |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| **`InputFile`**    | Validations génériques HTTP/PHP, vérification de taille, extensions, type MIME réel (`fileinfo`) et nettoyage du nom de fichier. | Déplacement, stockage, copie ou suppression sur le disque.     |
+| **`InputFileImg`** | Validation complémentaire des dimensions de l'image (`getimagesize`) et intégration du drapeau de redimensionnement.             | Manipulation physique des pixels ou modification du fichier.   |
+| **`FileManager`**  | Gestion physique bas niveau du système de fichiers (copie, remplacement, suppression, vérification d'existence).                 | Validation des règles applicatives liées aux formulaires HTTP. |
+| **`ImageManager`** | Redimensionnement effectif (`Gumlet\ImageResize`) et sauvegarde physique de l'image sur disque.                                  | Validation initiale des règles de sécurité de l'upload.        |
